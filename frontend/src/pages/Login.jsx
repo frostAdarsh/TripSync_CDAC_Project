@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { authApi } from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast'; 
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         
-        // Loading Toast
+        
         const toastId = toast.loading('Logging in...');
 
         try {
@@ -19,24 +20,24 @@ const Login = () => {
             
             localStorage.setItem('token', response.data.accessToken);
             
-            // Success Toast
+            
             toast.success('Welcome back!', { id: toastId });
             
-            // Small delay so user can see the message before redirect
+           
             setTimeout(() => {
                 navigate('/dashboard');
             }, 1000);
 
         } catch (error) {
             console.error(error);
-            // Error Toast
+           
             toast.error('Login failed! Check email/password.', { id: toastId });
         }
     };
 
     return (
         <div className="login-form card">
-            {/* Add the Toaster here so notifications can show up */}
+           
             <Toaster position="top-right" reverseOrder={false} />
             
             <h2 style={{ textAlign: 'center' }}>Welcome Back</h2>
@@ -59,6 +60,10 @@ const Login = () => {
                 
                 <button type="submit">Log In</button>
             </form>
+
+            <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+                Don't have an account? <Link to="/signup">Sign up here</Link>
+            </p>
         </div>
     );
 };

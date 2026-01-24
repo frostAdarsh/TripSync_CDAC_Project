@@ -39,7 +39,7 @@ input {
   margin-bottom: 1rem;
   border: 1px solid #cbd5e1;
   border-radius: 4px;
-  box-sizing: border-box; /* Important for padding */
+  box-sizing: border-box; 
 }
 
 button {
@@ -62,4 +62,108 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+}
+
+
+/* Landing Page Styles */
+.landing-container {
+    text-align: center;
+}
+
+.hero {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    padding: 5rem 2rem;
+    border-radius: 0 0 50% 50% / 4rem; 
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border: 2px solid white;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 300px;
+}
+
+
+/* --- Admin Panel Styles --- */
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-card {
+  max-width: 600px;
+  margin: 0 auto; 
+}
+
+
+.btn-back {
+  background-color: #64748b; /* Slate Gray */
+  width: auto; /* Overrides the default 100% width */
+  padding: 0.5rem 1rem;
+}
+
+.btn-back:hover {
+  background-color: #475569;
+}
+
+.btn-submit {
+  background-color: #2563eb; /* Blue */
+  margin-top: 1rem;
+}
+
+.btn-submit:hover {
+  background-color: #1d4ed8;
+}
+
+/* Textarea specific styling */
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical; /* Allows user to resize height only */
 }
