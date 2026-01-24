@@ -7,10 +7,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+// --- THESE ARE THE MISSING IMPORTS ---
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
+// -------------------------------------
 
 @Configuration
 @EnableWebSecurity
@@ -23,30 +29,38 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // 1. Disable CSRF (Cross-Site Request Forgery) as we are using stateless JWTs
-            .csrf(AbstractHttpConfigurer::disable)
-            
-            // 2. Configure URL permissions
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Link to the bean below
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Allow anyone to access Auth endpoints (Login, Register)
-                .requestMatchers("/api/auth/**").permitAll()
-                
-                // Only users with 'ADMIN' role can access Admin endpoints
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                
-                // All other requests require authentication
+                .requestMatchers("/api/auth/**").permitAll() // Allow Login/Register
                 .anyRequest().authenticated()
             )
-            
-            // 3. Set Session Management to Stateless (No HttpSession created)
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            
-            // 4. Set the Authentication Provider (defined in ApplicationConfig)
             .authenticationProvider(authenticationProvider)
-            
-            // 5. Add our custom JWT Filter before the standard Spring Security filter
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // --- CORS CONFIGURATION BEAN ---
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        // 1. Allow Frontend URL (Vite runs on 5173)
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        
+        // 2. Allow all common HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // 3. Allow headers for JWT and Data
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        
+        // 4. Allow credentials
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Apply to all paths
+        return source;
     }
 }
