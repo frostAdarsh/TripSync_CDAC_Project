@@ -1,128 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --primary: #2563eb;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --text: #1e293b;
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --bg: #f9fafb;
+  --card-bg: rgba(255,255,255,0.9);
+  --text: #0f172a;
+  --muted: #64748b;
+  --radius: 14px;
+}
+
+/* ---------- GLOBAL ---------- */
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
   color: var(--text);
+  line-height: 1.6;
 }
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
   padding: 2rem;
 }
 
-/* Card Styling */
+/* ---------- CARDS ---------- */
+
 .card {
   background: var(--card-bg);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  margin-bottom: 1rem;
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 
+    0 10px 25px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: all 0.25s ease;
 }
 
-/* Form Styling */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+}
+
+/* ---------- FORMS ---------- */
+
 .login-form {
-  max-width: 400px;
-  margin: 100px auto;
+  max-width: 420px;
+  margin: 120px auto;
 }
 
-input {
+input, textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  box-sizing: border-box; 
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  transition: 0.2s ease;
 }
+
+input:focus, textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(79,70,229,0.12);
+}
+
+/* ---------- BUTTONS ---------- */
 
 button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  padding: 0.85rem 1.75rem;
   cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
 }
 
-button:hover {
-  background-color: #1d4ed8;
-}
-
-/* Grid for Destinations */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-
-/* Landing Page Styles */
-.landing-container {
-    text-align: center;
-}
-
-.hero {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
-    padding: 5rem 2rem;
-    border-radius: 0 0 50% 50% / 4rem; 
-    margin-bottom: 3rem;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.buttons {
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-book {
+  padding: 0.9rem 2rem;
+  min-height: 44px;
 }
 
 .btn-primary {
-    background: #2563eb;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    border: 2px solid white;
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(79,70,229,0.25);
 }
 
 .btn-secondary {
-    background: transparent;
-    border: 2px solid white;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
 }
 
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.btn-danger:hover {
+  box-shadow: 0 8px 18px rgba(239,68,68,0.3);
+}
+
+.btn-back {
+  background: #64748b;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.btn-back:hover {
+  background: #475569;
+}
+
+/* ---------- GRID ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.8rem;
+}
+
+/* ---------- HERO ---------- */
+
+.hero {
+  background: linear-gradient(135deg, #4f46e5, #1e3a8a);
+  color: white;
+  padding: 6rem 2rem;
+  border-radius: 0 0 40% 40% / 3rem;
+  box-shadow: 0 25px 50px rgba(79,70,229,0.3);
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  opacity: 0.9;
+}
+
+/* ---------- FEATURES ---------- */
+
 .features {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem;
-    flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
 }
 
 .feature-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    max-width: 300px;
+  text-align: center;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: var(--radius);
+  transition: 0.25s ease;
 }
 
+.feature-card:hover {
+  transform: translateY(-6px) scale(1.01);
+}
 
-/* --- Admin Panel Styles --- */
+/* ---------- SEARCH ---------- */
+
+.search-container {
+  max-width: 400px;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border-radius: 999px;
+}
+
+/* ---------- DASHBOARD ---------- */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ---------- PACKAGE CARDS ---------- */
+
+.package-price {
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-book {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* ---------- ADMIN ---------- */
 
 .admin-header {
   display: flex;
@@ -133,37 +232,45 @@ button:hover {
 
 .admin-card {
   max-width: 600px;
-  margin: 0 auto; 
+  margin: auto;
 }
 
+/* ---------- UX DETAILS ---------- */
 
-.btn-back {
-  background-color: #64748b; /* Slate Gray */
-  width: auto; /* Overrides the default 100% width */
-  padding: 0.5rem 1rem;
+.no-results {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 2rem;
+  font-size: 1.1rem;
 }
 
-.btn-back:hover {
-  background-color: #475569;
+::selection {
+  background: rgba(79,70,229,0.15);
 }
 
-.btn-submit {
-  background-color: #2563eb; /* Blue */
-  margin-top: 1rem;
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.btn-submit:hover {
-  background-color: #1d4ed8;
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  border-radius: 20px;
 }
 
-/* Textarea specific styling */
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-family: inherit;
-  resize: vertical; /* Allows user to resize height only */
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .container {
+    padding: 1.2rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
 }

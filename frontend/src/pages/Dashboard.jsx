@@ -5,6 +5,7 @@ import { isAdmin } from '../utils/authUtils';
 
 const Dashboard = () => {
     const [destinations, setDestinations] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(''); // 1. New State for Search
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,37 +29,70 @@ const Dashboard = () => {
         navigate('/');
     };
 
+    // 2. Filter Logic: Only show destinations where country matches search
+    const filteredDestinations = destinations.filter((dest) => 
+        dest.country.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            {/* Header Section */}
+            <div className="dashboard-header">
                 <h1>Travel Destinations</h1>
                 
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    
+                <div className="header-actions">
                     {isAdmin() && (
                         <button 
                             onClick={() => navigate('/admin')}
-                            style={{ background: '#2563eb' }} 
+                            className="btn-primary"
                         >
                             Admin Panel
                         </button>
                     )}
-                   
 
-                    <button onClick={handleLogout} style={{ background: '#ef4444' }}>
+                    <button 
+                        onClick={handleLogout} 
+                        className="btn-danger"
+                    >
                         Logout
                     </button>
                 </div>
             </div>
 
-            <div className="grid">
-                {destinations.map((dest) => (
-                    <div key={dest.id} className="card">
-                        <h3>{dest.name}</h3>
-                        <p style={{ color: '#64748b', fontSize: '0.9rem' }}>{dest.country} • {dest.location}</p>
-                        <p>{dest.description}</p>
-                    </div>
-                ))}
+            {/* 3. Search Bar Section */}
+            <div className="search-container">
+                <input 
+                    type="text" 
+                    placeholder="Search by country (e.g. Japan)..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-input"
+                />
+            </div>
+
+            {/* Grid Section - Now using 'filteredDestinations' */}
+           <div className="grid">
+                {filteredDestinations.length > 0 ? (
+                    filteredDestinations.map((dest) => (
+                        <div key={dest.id} className="card">
+                            <h3>{dest.name}</h3>
+                            <p className="card-meta">
+                                {dest.country} • {dest.location}
+                            </p>
+                            <p>{dest.description}</p>
+                            
+                            
+                            <button 
+                                className="btn-view-packages"
+                                onClick={() => navigate(`/packages/${dest.id}`)}
+                            >
+                                View Packages
+                            </button>
+                        </div>
+                    ))
+                ) : (
+                    <p className="no-results">No destinations found for "{searchQuery}"</p>
+                )}
             </div>
         </div>
     );
