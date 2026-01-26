@@ -366,3 +366,156 @@ a { text-decoration: none; }
   .container { padding: 1rem; }
   .dashboard-header { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* --- Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 400px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions button { flex: 1; }
+
+.summary { margin: 1rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+.total-price { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-top: 0.5rem; }
+
+/* Simple Spinner */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loading-state, .success-state { text-align: center; padding: 2rem; }
+
+
+
+/* Page Layout */
+.bookings-page {
+  margin-top: 80px; /* Moves content down from navbar */
+  min-height: 80vh;
+}
+
+.bookings-page h2 {
+  margin-bottom: 24px;
+  color: #1e293b;
+}
+
+/* Grid Layout for Cards */
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Card Styling */
+.booking-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+}
+
+.card-body p {
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.card-body strong {
+  color: #334155;
+}
+
+/* --- STATUS BADGES (The Green Color) --- */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Green for Confirmed */
+.status-badge.confirmed {
+  background-color: #dcfce7; /* Light Green Background */
+  color: #166534;            /* Dark Green Text */
+  border: 1px solid #bbf7d0;
+}
+
+/* Yellow for Pending */
+.status-badge.pending {
+  background-color: #fef9c3; /* Light Yellow */
+  color: #854d0e;            /* Dark Yellow/Brown */
+  border: 1px solid #fde047;
+}
+
+/* Red for Cancelled */
+.status-badge.cancelled {
+  background-color: #fee2e2; /* Light Red */
+  color: #991b1b;            /* Dark Red */
+  border: 1px solid #fecaca;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+}
+
+.empty-state p {
+  color: #64748b;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}

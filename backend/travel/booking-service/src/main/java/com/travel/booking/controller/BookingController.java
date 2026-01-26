@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/bookings")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class BookingController {
 
     private final BookingService service;
@@ -51,4 +52,6 @@ public class BookingController {
     public ResponseEntity<Booking> updateStatus(@PathVariable Long id, @RequestParam String status) {
         return ResponseEntity.ok(service.updateBookingStatus(id, status));
     }
+
+    
 }

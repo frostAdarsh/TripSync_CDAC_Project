@@ -11,14 +11,21 @@ export const catalogApi = axios.create({
     baseURL: 'http://localhost:8082/api',
 });
 
-// 3. Interceptor: Automatically attach the Token to requests
-catalogApi.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+// 3. NEW: Connection to Booking Service (Port 8083)
+export const bookingApi = axios.create({
+    baseURL: 'http://localhost:8083/api',
+});
+
+// --- HELPER: Function to attach Token ---
+const attachToken = (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+};
+
+// --- APPLY INTERCEPTORS ---
+// Attach the token to requests for BOTH Catalog and Booking services
+catalogApi.interceptors.request.use(attachToken, (error) => Promise.reject(error));
+bookingApi.interceptors.request.use(attachToken, (error) => Promise.reject(error));

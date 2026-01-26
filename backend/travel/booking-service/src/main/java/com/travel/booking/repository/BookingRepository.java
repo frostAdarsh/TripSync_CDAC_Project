@@ -2,13 +2,10 @@ package com.travel.booking.repository;
 
 import com.travel.booking.entity.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     
-    // Custom method to fetch all bookings for a specific user
+    // REQUIRED: Used by getBookingsByUserId() in your service
     List<Booking> findByUserId(Long userId);
 }

@@ -1,10 +1,13 @@
 package com.travel.auth.service;
 
+import com.travel.auth.entity.User;
+import com.travel.auth.repository.UserRepository; // <--- IMPORTS ADDED
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor; // <--- MODERN INJECTION
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor // <--- This injects UserRepository automatically
 public class JwtService {
 
+    private final UserRepository userRepository; // <--- CONNECTS TO DB
+
+    // Ensure this matches the key in your Booking Service application.properties
     private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 
     public String extractUsername(String token) {
@@ -28,22 +35,32 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    // --- FIX STARTS HERE ---
+    // --- THIS IS THE CRITICAL FIX ---
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         
-        // Extract the role from the User object
+        // 1. Extract Role
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
                 .map(item -> item.getAuthority())
                 .orElse("CUSTOMER");
-        
-        // Add "role" to the token payload
         claims.put("role", role);
+
+        // 2. Extract ID (The Safe Way)
+        // We look up the user in the database to get the ID safely.
+        try {
+            User user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            claims.put("id", user.getId()); // <--- ADDS ID TO TOKEN
+            
+        } catch (Exception e) {
+            System.out.println("Error adding ID to token: " + e.getMessage());
+        }
 
         return generateToken(claims, userDetails);
     }
-    // --- FIX ENDS HERE ---
+    // --------------------------------
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
