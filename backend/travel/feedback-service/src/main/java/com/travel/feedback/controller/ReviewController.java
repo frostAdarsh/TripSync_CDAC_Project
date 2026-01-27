@@ -53,4 +53,13 @@ public class ReviewController {
         // Corrected return statement for HTTP 204 No Content
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Get ALL reviews in the system.
+     * URL: GET http://localhost:8084/api/reviews
+     */
+    @GetMapping
+    public ResponseEntity<List<Review>> getAllReviews() {
+        return ResponseEntity.ok(service.getAllReviews());
+    }
 }

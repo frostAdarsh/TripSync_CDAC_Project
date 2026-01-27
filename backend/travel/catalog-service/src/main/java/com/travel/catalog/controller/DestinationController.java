@@ -4,7 +4,7 @@ import com.travel.catalog.entity.Destination;
 import com.travel.catalog.service.DestinationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize; // <--- IMPORT THIS
+import org.springframework.security.access.prepost.PreAuthorize; 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

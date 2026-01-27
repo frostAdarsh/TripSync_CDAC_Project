@@ -61,4 +61,6 @@ public class TourPackageController {
         service.deletePackage(id);
         return ResponseEntity.noContent().build();
     }
+
+    
 }

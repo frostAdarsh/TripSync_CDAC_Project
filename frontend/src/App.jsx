@@ -7,6 +7,7 @@ import AdminPanel from './pages/AdminPanel';
 import TourPackages from './pages/TourPackages'; 
 import AdminRoute from './components/AdminRoute';
 import MyBookings from './pages/MyBookings';
+import MyReviews from './pages/MyReviews'; 
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/my-reviews" element={<MyReviews />} />
         
         
         <Route path="/packages/:destinationId" element={<TourPackages />} />
