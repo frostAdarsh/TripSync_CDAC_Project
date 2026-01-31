@@ -8,6 +8,8 @@ import TourPackages from './pages/TourPackages';
 import AdminRoute from './components/AdminRoute';
 import MyBookings from './pages/MyBookings';
 import MyReviews from './pages/MyReviews'; 
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import './App.css';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
         
         
         <Route path="/packages/:destinationId" element={<TourPackages />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route 
           path="/admin" 

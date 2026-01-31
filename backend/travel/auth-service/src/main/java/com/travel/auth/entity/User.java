@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime; 
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users") // 'user' is a reserved keyword in SQL, so we use 'users'
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -34,13 +35,20 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Stores "ADMIN" or "CUSTOMER" as a string in the DB
+    private Role role;
+
+    // --- NEW FIELDS FOR FORGOT PASSWORD ---
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "token_expiry")
+    private LocalDateTime tokenExpiry;
+    // --------------------------------------
 
     // --- UserDetails Implementation ---
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Spring Security expects roles to start with "ROLE_"
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
@@ -51,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // We use email as the unique username
+        return email;
     }
 
     @Override

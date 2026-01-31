@@ -6,8 +6,11 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // This method is magic. Spring Data JPA automatically generates the SQL 
-    // to find a user where the 'email' column matches the argument.
+    // Existing method
     Optional<User> findByEmail(String email);
-    
+
+    // --- ADD THIS NEW METHOD ---
+    // Spring Data JPA will automatically generate the SQL to find a user 
+    // where the 'resetToken' column matches.
+    Optional<User> findByResetToken(String resetToken);
 }

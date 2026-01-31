@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { authApi } from '../api/axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; 
 import toast, { Toaster } from 'react-hot-toast'; 
-import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +11,6 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         
-        
         const toastId = toast.loading('Logging in...');
 
         try {
@@ -20,24 +18,21 @@ const Login = () => {
             
             localStorage.setItem('token', response.data.accessToken);
             
-            
             toast.success('Welcome back!', { id: toastId });
             
-           
             setTimeout(() => {
                 navigate('/dashboard');
             }, 1000);
 
         } catch (error) {
             console.error(error);
-           
             toast.error('Login failed! Check email/password.', { id: toastId });
         }
     };
 
     return (
         <div className="login-form card">
-           
+            
             <Toaster position="top-right" reverseOrder={false} />
             
             <h2 style={{ textAlign: 'center' }}>Welcome Back</h2>
@@ -58,6 +53,17 @@ const Login = () => {
                     required 
                 />
                 
+                {/* --- ADDED FORGOT PASSWORD LINK HERE --- */}
+                <div style={{ textAlign: 'right', marginBottom: '15px' }}>
+                    <Link 
+                        to="/forgot-password" 
+                        style={{ fontSize: '0.9rem', color: '#007bff', textDecoration: 'none' }}
+                    >
+                        Forgot Password?
+                    </Link>
+                </div>
+               
+
                 <button type="submit">Log In</button>
             </form>
 

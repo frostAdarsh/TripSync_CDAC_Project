@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Signup = () => {
-   
+    
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -17,12 +17,31 @@ const Signup = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // --- NEW: VALIDATION HELPER ---
+    const isValidEmail = (email) => {
+        // Regex ensures format: text + @ + text + . + text
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+    // ------------------------------
+
     const handleSignup = async (e) => {
         e.preventDefault();
+
+        // --- NEW: VALIDATION CHECK ---
+        if (!isValidEmail(formData.email)) {
+            toast.error("Please enter a valid email address (e.g., user@example.com)");
+            return; // Stop here, do not call API
+        }
+
+        if (formData.password.length < 6) {
+            toast.error("Password must be at least 6 characters long");
+            return;
+        }
+        // -----------------------------
+
         const toastId = toast.loading('Creating account...');
 
         try {
-            
             await authApi.post('/register', { 
                 ...formData, 
                 role: 'CUSTOMER' 
@@ -36,7 +55,9 @@ const Signup = () => {
 
         } catch (error) {
             console.error(error);
-            toast.error('Signup failed! Check your inputs.', { id: toastId });
+            // Show server message if available (e.g. "Email already in use")
+            const msg = error.response?.data?.message || 'Signup failed! Check your inputs.';
+            toast.error(msg, { id: toastId });
         }
     };
 
