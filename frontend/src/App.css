@@ -854,3 +854,140 @@ textarea {
     margin: 0 1rem;
   }
 }
+
+
+
+/* Container for the list */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.ticket-wrapper {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* --- THE TICKET ITSELF --- */
+.ticket-card {
+  display: flex;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  /* Ensure background colors print correctly */
+  -webkit-print-color-adjust: exact; 
+}
+
+/* Left Section (Main) */
+.ticket-left {
+  flex: 7;
+  padding: 24px;
+  border-right: 2px dashed #cbd5e1;
+  position: relative;
+}
+
+/* Cutout Circles for "Ticket" effect */
+.ticket-left::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background: var(--bg-body); /* Matches page background */
+  border-radius: 50%;
+}
+.ticket-left::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background: var(--bg-body);
+  border-radius: 50%;
+}
+
+/* Right Section (Stub) */
+.ticket-right {
+  flex: 3;
+  padding: 24px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Typography */
+.ticket-brand {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #cbd5e1;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.label {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.value.big {
+  font-size: 1.5rem;
+  color: #2563eb;
+}
+
+/* Layout Rows */
+.ticket-header { margin-bottom: 20px; }
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* Status Colors */
+.status-confirmed { color: #166534; }
+.status-pending { color: #d97706; }
+
+/* Right Stub Styling */
+.price-tag {
+  margin: 15px 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.barcode {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 4px;
+  font-weight: 900;
+  transform: scaleY(2); 
+  opacity: 0.5;
+  margin-top: 10px;
+}
+
+/* Action Buttons */
+.ticket-actions {
+  margin-top: 12px;
+  text-align: right;
+}

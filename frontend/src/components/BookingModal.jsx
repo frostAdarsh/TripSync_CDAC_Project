@@ -1,78 +1,65 @@
 import { useState } from 'react';
 import { bookingApi } from '../api/axiosConfig';
-import { getUserId, getToken } from '../utils/authUtils'; // ✅ Imported correctly
+import { getUserId } from '../utils/authUtils';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from './CheckoutForm';
+
+// Load key from .env file
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const BookingModal = ({ tourPackage, onClose }) => {
     const [step, setStep] = useState(1);
+    const [clientSecret, setClientSecret] = useState("");
     const navigate = useNavigate();
 
-    const handlePayment = async () => {
-        // 1. Get Token and User ID using your Utils
-        const token = getToken(); 
+    const handleInitializePayment = async () => {
         const userId = getUserId();
-        
-        // 2. Safety Check
-        if (!userId || !token) {
-            toast.error("Your session has expired. Please login again.");
-            onClose(); 
-            navigate('/login'); 
+        if (!userId) {
+            toast.error("Please login to book.");
+            navigate('/login');
             return;
         }
 
-        setStep(2); // Show loading spinner
+        const loader = toast.loading("Initializing secure payment...");
+        try {
+            const response = await bookingApi.post('/payments/create-intent', {
+                amount: tourPackage.price
+            });
+            
+            setClientSecret(response.data.clientSecret);
+            toast.dismiss(loader);
+            setStep(2); 
+        } catch (error) {
+            toast.dismiss(loader);
+            toast.error("Could not start payment.");
+            console.error(error);
+        }
+    };
+
+    const handleBookingSuccess = async () => {
+        const userId = getUserId();
         
         try {
-            // 3. Create the Booking
-            const bookingResponse = await bookingApi.post('/bookings', {
+            setStep(3); 
+            
+            await bookingApi.post('/bookings', {
                 userId: userId,
                 packageId: tourPackage.id,
-                status: 'PENDING'
+                status: 'CONFIRMED'
             });
-
-            const bookingId = bookingResponse.data.id;
-
-            // 4. Process Payment
-            await bookingApi.post('/payments', {
-                booking: { id: bookingId },
-                amount: tourPackage.price,
-                paymentMethod: 'CREDIT_CARD'
-            });
-
-            // 5. Confirm Booking Status
-            await bookingApi.put(`/bookings/${bookingId}/status?status=CONFIRMED`);
-
-            setStep(3); // Show Success
-            toast.success("Booking Successful!");
+            
+            toast.success("Payment Successful!");
             
             setTimeout(() => {
                 onClose();
                 navigate('/my-bookings');
-            }, 2000);
+            }, 2500);
 
         } catch (error) {
-            console.error("Booking Error:", error);
-
-            // 6. Robust Error Handling
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                if (error.response.status === 401) {
-                    toast.error("Session expired. Please login again.");
-                    navigate('/login');
-                } else {
-                    toast.error(error.response.data?.message || "Booking Failed. Server Error.");
-                }
-            } else if (error.request) {
-                // The request was made but no response was received
-                toast.error("Network Error. Is the backend running?");
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                toast.error("An unexpected error occurred.");
-            }
-            
-            setStep(1); // Reset to start
+            toast.error("Booking save failed. Contact support.");
         }
     };
 
@@ -82,30 +69,33 @@ const BookingModal = ({ tourPackage, onClose }) => {
                 {step === 1 && (
                     <>
                         <h2>Confirm Booking</h2>
-                        <div className="summary">
+                        <div className="summary" style={{margin: '20px 0', padding: '15px', background: '#f8fafc', borderRadius: '8px'}}>
                             <p><strong>Package:</strong> {tourPackage.packageName}</p>
-                            <p><strong>Duration:</strong> {tourPackage.duration}</p>
-                            <p className="total-price">Total: ₹{tourPackage.price}</p>
+                            <div style={{marginTop: '10px', fontSize: '1.2rem', fontWeight: 'bold', color: '#2563eb'}}>
+                                Total: ₹{tourPackage.price}
+                            </div>
                         </div>
                         <div className="modal-actions">
-                            <button className="btn-secondary" onClick={onClose} style={{color: '#64748b', borderColor: '#cbd5e1'}}>Cancel</button>
-                            <button className="btn-primary" onClick={handlePayment}>Confirm & Pay</button>
+                            <button className="btn-secondary" onClick={onClose}>Cancel</button>
+                            <button className="btn-primary" onClick={handleInitializePayment}>Proceed to Pay</button>
                         </div>
                     </>
                 )}
 
-                {step === 2 && (
-                    <div className="loading-state">
-                        <div className="spinner"></div>
-                        <p>Processing Secure Payment...</p>
-                    </div>
+                {step === 2 && clientSecret && (
+                    <>
+                        <h3 style={{marginBottom: '20px'}}>Secure Payment</h3>
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                            <CheckoutForm onSuccess={handleBookingSuccess} />
+                        </Elements>
+                        <button className="btn-secondary" onClick={() => setStep(1)} style={{width: '100%', marginTop: '15px'}}>Cancel</button>
+                    </>
                 )}
 
                 {step === 3 && (
-                    <div className="success-state">
-                        <h2 style={{color: '#10b981'}}>Success! 🎉</h2>
-                        <p>Your trip has been booked.</p>
-                        <p>Redirecting to your tickets...</p>
+                    <div style={{textAlign: 'center', padding: '40px 20px'}}>
+                        <h2 style={{color: '#10b981', fontSize: '3rem'}}>🎉</h2>
+                        <h3>Booking Confirmed!</h3>
                     </div>
                 )}
             </div>

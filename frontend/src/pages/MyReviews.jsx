@@ -18,7 +18,7 @@ const MyReviews = () => {
     comment: ''
   });
 
-  /* ---------- INIT ---------- */
+  
 
   useEffect(() => {
     const userId = getUserId();
@@ -42,7 +42,7 @@ const MyReviews = () => {
     fetchReviews();
   }, [activeTab, currentUser.id]);
 
-  /* ---------- API ---------- */
+  
 
   const fetchPackages = async () => {
     try {
@@ -73,14 +73,14 @@ const MyReviews = () => {
     }
   };
 
-  /* ---------- HELPERS ---------- */
+  
 
   const getPackageName = (id) => {
     const pkg = packages.find(p => p.id === id);
     return pkg ? pkg.packageName : `Package #${id}`;
   };
 
-  /* ---------- ACTIONS ---------- */
+ 
 
   const handleDelete = async (reviewId) => {
     if (!window.confirm("Delete this review?")) return;
@@ -120,7 +120,7 @@ const MyReviews = () => {
     }
   };
 
-  /* ---------- UI ---------- */
+  
 
   return (
     <div className="container page-content">
@@ -128,7 +128,7 @@ const MyReviews = () => {
       <div className="page-header">
         <h1>Traveller Reviews</h1>
 
-        {/* TABS */}
+       
         <div className="review-tabs">
           <button
             className={`tab-btn ${activeTab === 'my' ? 'active' : ''}`}

@@ -69,6 +69,37 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* REVIEWS / TESTIMONIALS */}
+      <section className="features" style={{ marginTop: "4rem" }}>
+        <h2 style={{ textAlign: "center", width: "100%" }}>
+          What Our Travelers Say 💬
+        </h2>
+
+        <div className="feature-card">
+          <p>
+            "Amazing experience! Everything was smooth and well organized. Best
+            travel platform I’ve used so far."
+          </p>
+          <h4>- Rahul Sharma ⭐⭐⭐⭐⭐</h4>
+        </div>
+
+        <div className="feature-card">
+          <p>
+            "Affordable packages, great support team, and beautiful destinations.
+            Highly recommended!"
+          </p>
+          <h4>- Neha Verma ⭐⭐⭐⭐⭐</h4>
+        </div>
+
+        <div className="feature-card">
+          <p>
+            "Loved the booking experience. Clean UI, fast response, and awesome
+            tours."
+          </p>
+          <h4>- Arjun Mehta ⭐⭐⭐⭐⭐</h4>
+        </div>
+      </section>
+
       {/* CTA SECTION */}
       <section
         className="card"
@@ -86,6 +117,24 @@ const LandingPage = () => {
           </button>
         </Link>
       </section>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: "4rem",
+          padding: "1.5rem",
+          textAlign: "center",
+          borderTop: "1px solid #ddd",
+          color: "#777",
+          fontSize: "0.9rem",
+        }}
+      >
+        <p>© {new Date().getFullYear()} Travel & Tour Management System</p>
+        <p>
+          Created by <strong>Adarsh Mani</strong> &{" "}
+          <strong>Abhishek Kushwaha</strong>
+        </p>
+      </footer>
     </div>
   );
 };
